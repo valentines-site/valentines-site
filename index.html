@@ -5,26 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><3</title>
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        .tulip {
+            position: fixed;
+            font-size: 2rem;
+            pointer-events: none;
+            z-index: 9999;
+            animation: floatUp 4.5s ease-out forwards;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-140px) scale(1.2);
+                opacity: 0;
+            }
+        }
+    </style>
 </head>
+
 <body class="bg-gradient-to-br from-blue-100 to-blue-200 min-h-screen flex items-center justify-center p-4">
     <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl p-8 text-center relative">
         <div id="question-container">
-            <h1 class="text-3xl font-bold text-blue-400 mb-6">will you be my valentine?</h1>
+            <h1 class="text-3xl font-bold text-blue-400 mb-6">
+                will you be my valentine?
+            </h1>
+
             <div class="flex flex-col items-center space-y-6 mb-8">
-                <img src="https://cdn.discordapp.com/attachments/1456482037702856777/1456483693626396864/togif.gif?ex=6988a664&is=698754e4&hm=4f9e8075a84328cc8f5446c4fa2e2e5d49a398e715600aba9537bdbd5e5e1d9e&" alt="Hearts" class="w-auto h-auto max-w-full max-h-64 object-contain rounded-lg">
+                <img 
+                    src="https://cdn.discordapp.com/attachments/1456482037702856777/1456483693626396864/togif.gif?ex=6988a664&is=698754e4&hm=4f9e8075a84328cc8f5446c4fa2e2e5d49a398e715600aba9537bdbd5e5e1d9e&" 
+                    class="w-auto h-auto max-w-full max-h-64 object-contain rounded-lg"
+                >
             </div>
+
             <div class="flex justify-center space-x-4 mt-6">
-                <button id="yes-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-all duration-200 transform hover:scale-105">
+                <button 
+                    id="yes-btn"
+                    class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-all duration-200 transform hover:scale-105"
+                >
                     ofc i will c:
                 </button>
-                <button id="no-btn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition-all duration-200">
+
+                <button 
+                    id="no-btn"
+                    class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition-all duration-200"
+                >
                     no ;c
                 </button>
             </div>
         </div>
+
         <div id="success-container" class="hidden">
-            <h1 class="text-3xl font-bold text-blue-400 mb-6">yay thank u princess i love you &lt;3</h1>
-            <img src="https://cdn.discordapp.com/attachments/1451844888265232447/1459383576616501313/7B4B4DC0-2AD6-42D9-BB60-CB6320DA0634.gif?ex=6988a71e&is=6987559e&hm=e08f02caafe3ec6bace7ec246514234cecd5442538976d0a9799bae638ecd849&" alt="Cute gif" class="mx-auto w-auto h-auto max-w-full max-h-64 object-contain rounded-lg">
+            <h1 class="text-3xl font-bold text-blue-400 mb-6">
+                yay thank u princess i love you &lt;3
+            </h1>
+
+            <img 
+                src="https://cdn.discordapp.com/attachments/1451844888265232447/1459383576616501313/7B4B4DC0-2AD6-42D9-BB60-CB6320DA0634.gif?ex=6988a71e&is=6987559e&hm=e08f02caafe3ec6bace7ec246514234cecd5442538976d0a9799bae638ecd849&" 
+                class="mx-auto w-auto h-auto max-w-full max-h-64 object-contain rounded-lg"
+            >
         </div>
     </div>
 
@@ -34,12 +77,11 @@
             const noBtn = document.getElementById('no-btn');
             const questionContainer = document.getElementById('question-container');
             const successContainer = document.getElementById('success-container');
-            
+
             let yesBtnSize = 1;
             let noTextIndex = 0;
             let noButtonClickCount = 0;
-            const maxNoButtonClicks = 10; // After this many clicks, button becomes unclickable
-            
+
             const noTexts = [
                 "no ;c",
                 "why nott ;c",
@@ -47,97 +89,59 @@
                 "why not cutie ;c",
                 "ur making me sad ;c"
             ];
-            
+
+            function spawnTulips(count = 20) {
+                for (let i = 0; i < count; i++) {
+                    const tulip = document.createElement("div");
+                    tulip.className = "tulip";
+                    tulip.textContent = "🌷";
+                    tulip.style.left = Math.random() * window.innerWidth + "px";
+                    tulip.style.top = Math.random() * window.innerHeight + "px";
+                    document.body.appendChild(tulip);
+                    setTimeout(() => tulip.remove(), 4500);
+                }
+            }
+
             yesBtn.addEventListener('click', () => {
                 questionContainer.classList.add('hidden');
                 successContainer.classList.remove('hidden');
+                spawnTulips();
             });
-            
+
             noBtn.addEventListener('click', () => {
                 noButtonClickCount++;
-                
-                // Make button unclickable after max clicks
-                if (noButtonClickCount >= maxNoButtonClicks) {
+
+                if (noButtonClickCount >= 10) {
                     noBtn.disabled = true;
                     noBtn.classList.add('opacity-50', 'cursor-not-allowed');
                     noBtn.textContent = "plz say yes ;c";
                     return;
                 }
-                
-                // Increase yes button size
+
                 yesBtnSize += 0.15;
                 yesBtn.style.transform = `scale(${yesBtnSize})`;
-                
-                // Change no button text
-                if (Math.random() > 0.5) {
-                    // Sequential text
-                    noTextIndex = (noTextIndex + 1) % noTexts.length;
-                } else {
-                    // Random text
-                    noTextIndex = Math.floor(Math.random() * noTexts.length);
-                }
+
+                noTextIndex = Math.random() > 0.5
+                    ? (noTextIndex + 1) % noTexts.length
+                    : Math.floor(Math.random() * noTexts.length);
+
                 noBtn.textContent = noTexts[noTextIndex];
-                
-                // Get viewport dimensions
-                const viewportWidth = window.innerWidth;
-                const viewportHeight = window.innerHeight;
-                
-                // Get button dimensions
-                const btnWidth = noBtn.offsetWidth;
-                const btnHeight = noBtn.offsetHeight;
-                
-                // Calculate maximum positions while keeping button fully visible
-                const maxX = viewportWidth - btnWidth - 20;
-                const maxY = viewportHeight - btnHeight - 20;
-                
-                // Generate random position with more variety
-                // Using quadrants to ensure better distribution
-                let randomX, randomY;
-                
-                const quadrant = Math.floor(Math.random() * 4); // 0-3 for four quadrants
-                
-                switch(quadrant) {
-                    case 0: // Top-left
-                        randomX = Math.floor(Math.random() * (maxX/2));
-                        randomY = Math.floor(Math.random() * (maxY/2));
-                        break;
-                    case 1: // Top-right
-                        randomX = Math.floor((maxX/2) + Math.random() * (maxX/2));
-                        randomY = Math.floor(Math.random() * (maxY/2));
-                        break;
-                    case 2: // Bottom-left
-                        randomX = Math.floor(Math.random() * (maxX/2));
-                        randomY = Math.floor((maxY/2) + Math.random() * (maxY/2));
-                        break;
-                    case 3: // Bottom-right
-                        randomX = Math.floor((maxX/2) + Math.random() * (maxX/2));
-                        randomY = Math.floor((maxY/2) + Math.random() * (maxY/2));
-                        break;
-                }
-                
-                // Make sure we stay within bounds
-                randomX = Math.max(20, Math.min(randomX, maxX));
-                randomY = Math.max(20, Math.min(randomY, maxY));
-                
-                // Apply the new position
+
+                const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+                const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+
+                let x = Math.random() * maxX;
+                let y = Math.random() * maxY;
+
+                x = Math.max(20, Math.min(x, maxX));
+                y = Math.max(20, Math.min(y, maxY));
+
                 noBtn.style.position = 'fixed';
-                noBtn.style.left = `${randomX}px`;
-                noBtn.style.top = `${randomY}px`;
-                noBtn.style.zIndex = "999";
-                
-                // Ensure button stays visible on mobile
-                const btnRect = noBtn.getBoundingClientRect();
-                if (btnRect.right > viewportWidth || btnRect.bottom > viewportHeight ||
-                    btnRect.left < 0 || btnRect.top < 0) {
-                    // If button would be off screen, reposition it
-                    randomX = Math.floor(Math.random() * (viewportWidth - btnWidth - 40)) + 20;
-                    randomY = Math.floor(Math.random() * (viewportHeight - btnHeight - 40)) + 20;
-                    noBtn.style.left = `${randomX}px`;
-                    noBtn.style.top = `${randomY}px`;
-                }
+                noBtn.style.left = x + "px";
+                noBtn.style.top = y + "px";
+                noBtn.style.zIndex = 999;
             });
         });
     </script>
 </body>
-
 </html>
